@@ -16,6 +16,7 @@ public class Item {
     private Subcategory subcategory;
 
     private double price;
+    private int quantity;
     private String description;
 
     private int minInvLevel;
@@ -62,6 +63,14 @@ public class Item {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
     }
 
     public int getMinInvLevel() {
