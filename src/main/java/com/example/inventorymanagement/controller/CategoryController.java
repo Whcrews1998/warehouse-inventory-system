@@ -9,6 +9,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Controller
 public class CategoryController {
     private CategoryService categoryService;
@@ -17,10 +20,21 @@ public class CategoryController {
         this.categoryService = categoryService;
     }
 
-    @PostMapping("/categories")
+    @PostMapping("/categories/create-category")
     public ResponseEntity<Category> createNewCategory(@RequestBody CategoryDetails categoryDetails) {
         Category category = categoryDetails.createCategoryEntity();
         categoryService.save(category);
         return new ResponseEntity<>(category, HttpStatus.OK);
+    }
+
+    @PostMapping("/categories/create-category-list")
+    public ResponseEntity<List<Category>> createNewCategory(@RequestBody List<CategoryDetails> categoryDetailsList) {
+        List<Category> categoryList = new ArrayList<>();
+        for (CategoryDetails info : categoryDetailsList) {
+            categoryList.add(info.createCategoryEntity());
+        }
+
+        categoryService.saveAll(categoryList);
+        return new ResponseEntity<>(categoryList, HttpStatus.OK);
     }
 }
