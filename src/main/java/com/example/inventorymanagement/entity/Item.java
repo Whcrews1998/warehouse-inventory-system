@@ -12,7 +12,7 @@ public class Item {
     @Embedded
     private Location location;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     private Subcategory subcategory;
 
     private double price;

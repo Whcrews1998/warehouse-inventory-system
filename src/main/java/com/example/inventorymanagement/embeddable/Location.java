@@ -9,6 +9,9 @@ public class Location {
     private String city;
     private String state;
 
+    public Location() {
+    }
+
     public Location(String street, String zipCode, String city, String state) {
         this.street = street;
         this.zipCode = zipCode;
