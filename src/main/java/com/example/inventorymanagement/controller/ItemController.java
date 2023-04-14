@@ -1,15 +1,18 @@
 package com.example.inventorymanagement.controller;
 
+import com.example.inventorymanagement.entity.Category;
 import com.example.inventorymanagement.entity.Item;
 import com.example.inventorymanagement.entity.Subcategory;
 import com.example.inventorymanagement.model.ItemDetails;
 import com.example.inventorymanagement.model.SubcategoryDetails;
+import com.example.inventorymanagement.service.CategoryService;
 import com.example.inventorymanagement.service.ItemService;
 import com.example.inventorymanagement.service.SubcategoryService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -22,11 +25,14 @@ import java.util.Optional;
 public class ItemController {
     private ItemService itemService;
     private SubcategoryService subcategoryService;
+    private CategoryService categoryService;
 
-    public ItemController(ItemService itemService, SubcategoryService subcategoryService) {
+    public ItemController(ItemService itemService, SubcategoryService subcategoryService, CategoryService categoryService) {
         this.itemService = itemService;
         this.subcategoryService = subcategoryService;
+        this.categoryService = categoryService;
     }
+
 
     @GetMapping("/items")
     public ResponseEntity<List<Item>> getAllItems() {
@@ -62,6 +68,20 @@ public class ItemController {
         }
 
         itemService.saveAll(itemList);
+        return new ResponseEntity<>(itemList, HttpStatus.OK);
+    }
+
+    @GetMapping("/items/find-by-category/{catId}")
+    public ResponseEntity<List<Item>> findItemByCategory(@PathVariable int catId) {
+        Optional<Category> category = categoryService.findById(catId);
+        if (category.isEmpty()) throw new RuntimeException("Category does not exist!");
+
+        List<Item> itemList = new ArrayList<>();
+        for (Subcategory subcategory : category.get().getSubcategoryList()) {
+            List<Item> items = itemService.findBySubcategory(subcategory);
+            itemList.addAll(items);
+        }
+
         return new ResponseEntity<>(itemList, HttpStatus.OK);
     }
 
