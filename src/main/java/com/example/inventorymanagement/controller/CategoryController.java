@@ -6,6 +6,7 @@ import com.example.inventorymanagement.service.CategoryService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -18,6 +19,12 @@ public class CategoryController {
 
     public CategoryController(CategoryService categoryService) {
         this.categoryService = categoryService;
+    }
+
+    @GetMapping("/categories")
+    public ResponseEntity<List<Category>> getAllCategories() {
+        List<Category> categoryList = categoryService.findAll();
+        return new ResponseEntity<>(categoryList, HttpStatus.OK);
     }
 
     @PostMapping("/categories/create-category")
