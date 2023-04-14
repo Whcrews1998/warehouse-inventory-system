@@ -12,6 +12,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import javax.swing.text.html.Option;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -24,7 +27,7 @@ public class ItemController {
         this.subcategoryService = subcategoryService;
     }
 
-    @PostMapping("/items")
+    @PostMapping("/items/create-item")
     public ResponseEntity<Item> addItemToInventory(@RequestBody ItemDetails itemDetails) {
         Optional<Subcategory> subcategory = subcategoryService.findById(itemDetails.getSubcategoryDetails().getId());
         if (subcategory.isEmpty()) throw new RuntimeException("Subcategory does not exist");
@@ -33,6 +36,26 @@ public class ItemController {
         item.setSubcategory(subcategory.get());
         itemService.save(item);
         return new ResponseEntity<>(item, HttpStatus.OK);
+    }
+
+    @PostMapping("/items/create-item-list")
+    public ResponseEntity<List<Item>> addItemListToInventory(@RequestBody List<ItemDetails> list) {
+        List<Item> itemList = new ArrayList<>();
+        List<Subcategory> subcategoryList = subcategoryService.findAll();
+
+        for (ItemDetails info : list) {
+            Integer subId = info.getSubcategoryDetails().getId();
+            Optional<Subcategory> subcategory = subcategoryList.stream().filter(subcategory1 -> subcategory1.getId().equals(subId)).findFirst();
+
+            if (subcategory.isEmpty()) throw new RuntimeException("Subcategory does not exist");
+
+            Item item = info.createItemEntity();
+            item.setSubcategory(subcategory.get());
+            itemList.add(item);
+        }
+
+        itemService.saveAll(itemList);
+        return new ResponseEntity<>(itemList, HttpStatus.OK);
     }
 
 }
