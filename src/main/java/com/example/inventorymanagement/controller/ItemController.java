@@ -9,6 +9,7 @@ import com.example.inventorymanagement.service.SubcategoryService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -25,6 +26,12 @@ public class ItemController {
     public ItemController(ItemService itemService, SubcategoryService subcategoryService) {
         this.itemService = itemService;
         this.subcategoryService = subcategoryService;
+    }
+
+    @GetMapping("/items")
+    public ResponseEntity<List<Item>> getAllItems() {
+        List<Item> itemList = itemService.findAll();
+        return new ResponseEntity<>(itemList, HttpStatus.OK);
     }
 
     @PostMapping("/items/create-item")
