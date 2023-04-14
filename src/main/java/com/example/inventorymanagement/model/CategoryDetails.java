@@ -19,6 +19,7 @@ public class CategoryDetails {
         category.setName(this.name);
         for (SubcategoryDetails info : subcategoryList) {
             Subcategory subcategory = info.createSubcategoryEntity();
+            subcategory.setCategory(category);
             category.getSubcategoryList().add(subcategory);
         }
 
