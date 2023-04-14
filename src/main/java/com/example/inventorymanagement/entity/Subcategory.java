@@ -11,7 +11,6 @@ public class Subcategory {
     private Integer id;
     private String name;
 
-
     public Subcategory() {
     }
 

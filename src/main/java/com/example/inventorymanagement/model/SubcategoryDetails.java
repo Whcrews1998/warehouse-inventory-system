@@ -8,7 +8,6 @@ public class SubcategoryDetails {
 
 
 
-
     // Methods
     public Subcategory createSubcategoryEntity() {
         Subcategory subcategory = new Subcategory();
