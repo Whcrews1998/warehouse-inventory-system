@@ -1,5 +1,6 @@
 package com.example.inventorymanagement.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.util.List;
@@ -10,6 +11,11 @@ public class Subcategory {
     @GeneratedValue
     private Integer id;
     private String name;
+
+    @JsonIgnore
+    @ManyToOne
+    @JoinColumn(name="category_id")
+    private Category category;
 
     public Subcategory() {
     }

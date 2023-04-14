@@ -11,8 +11,7 @@ public class Category {
     @GeneratedValue
     private Integer id;
 
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name="category_id")
+    @OneToMany(mappedBy = "category",cascade = CascadeType.ALL)
     private List<Subcategory> subcategoryList;
 
     private String name;
