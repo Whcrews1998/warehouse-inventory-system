@@ -85,4 +85,12 @@ public class ItemController {
         return new ResponseEntity<>(itemList, HttpStatus.OK);
     }
 
+    @GetMapping("/items/find-by-subcategory/{subId}")
+    public ResponseEntity<List<Item>> findBySubCategory(@PathVariable int subId) {
+        Optional<Subcategory> subcategory = subcategoryService.findById(subId);
+        if (subcategory.isEmpty()) throw new RuntimeException("Subcategory does not exist!");
+        List<Item> itemList = itemService.findBySubcategory(subcategory.get());
+        return new ResponseEntity<>(itemList, HttpStatus.OK);
+    }
+
 }
