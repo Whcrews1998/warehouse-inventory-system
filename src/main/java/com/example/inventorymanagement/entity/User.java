@@ -6,6 +6,7 @@ import jakarta.persistence.Id;
 
 @Entity(name="user_details")
 public class User {
+
     @Id
     @GeneratedValue
     private Integer id;
