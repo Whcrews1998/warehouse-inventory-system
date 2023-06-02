@@ -6,7 +6,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.OneToOne;
 
 @Entity
-public class OrderDetails {
+public class OrderInfo {
     @Id
     @GeneratedValue
     private Integer id;
@@ -14,7 +14,7 @@ public class OrderDetails {
     private Item item;
     private int quantity;
 
-    public OrderDetails() {
+    public OrderInfo() {
     }
 
     public Integer getId() {
