@@ -1,6 +1,7 @@
 package com.example.inventorymanagement.controller;
 
 import com.example.inventorymanagement.entity.User;
+import com.example.inventorymanagement.exception.UserNotFoundException;
 import com.example.inventorymanagement.service.UserService;
 import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.http.HttpStatus;
@@ -22,7 +23,7 @@ public class UserController {
     @GetMapping("/users")
     public ResponseEntity<User> getUser(@RequestParam("username") String userName, @RequestParam("password") String password) {
         User user = userService.findByUsernameAndPassword(userName, password);
-        if (user == null) throw new RuntimeException("User Not Found");
+        if (user == null) throw new UserNotFoundException("User Not Found");
 
         return new ResponseEntity<User>(user, HttpStatus.OK);
     }
