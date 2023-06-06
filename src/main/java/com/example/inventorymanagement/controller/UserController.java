@@ -1,6 +1,7 @@
 package com.example.inventorymanagement.controller;
 
 import com.example.inventorymanagement.entity.User;
+import com.example.inventorymanagement.exception.UserAlreadyExistException;
 import com.example.inventorymanagement.exception.UserNotFoundException;
 import com.example.inventorymanagement.service.UserService;
 import org.springframework.data.crossstore.ChangeSetPersister;
@@ -30,7 +31,16 @@ public class UserController {
 
     @PostMapping("/users/create-user")
     public ResponseEntity<User> createUser(@RequestBody User userDetails) {
+        // Check if User
+        if (userExist(userDetails)) throw new UserAlreadyExistException("Username already exist.");
+
         userService.save(userDetails);
         return new ResponseEntity<User>(userDetails, HttpStatus.OK);
+    }
+
+    public boolean userExist(User user) {
+        User checkUser = userService.findByUsername(user.getUsername());
+        if (checkUser == null) return false;
+        return true;
     }
 }
