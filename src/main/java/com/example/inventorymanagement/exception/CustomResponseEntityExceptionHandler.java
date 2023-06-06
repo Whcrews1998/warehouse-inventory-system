@@ -23,4 +23,10 @@ public class CustomResponseEntityExceptionHandler extends ResponseEntityExceptio
         ErrorDetails error = new ErrorDetails(ex.getMessage(), request.getDescription(false), LocalDate.now());
         return new ResponseEntity<ErrorDetails>(error, HttpStatus.NOT_FOUND);
     }
+
+    @ExceptionHandler(UserAlreadyExistException.class)
+    public final ResponseEntity<ErrorDetails> handleUserAlreadyExist(Exception ex, WebRequest request) throws Exception {
+        ErrorDetails error = new ErrorDetails(ex.getMessage(), request.getDescription(false), LocalDate.now());
+        return new ResponseEntity<ErrorDetails>(error, HttpStatus.NOT_FOUND);
+    }
 }
